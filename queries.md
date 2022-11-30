@@ -14,13 +14,101 @@
 
 <!-- Your Code Goes Here -->
 
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {
+'number_of_employees': {
+'$gte': 5000
+}
+};
+const limit = 20;
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { limit });
+const result = await cursor.toArray();
+await client.close();
+
 ### 3. All the companies founded between 2000 and 2005, both years included. Retrieve only the `name` and `founded_year` fields.
 
 <!-- Your Code Goes Here -->
 
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {
+'$and': [
+    {
+      'founded_year': {
+        '$gte': 2000
+}
+}, {
+'founded_year': {
+'$lte': 2005
+}
+}
+]
+};
+const projection = {
+'founded_year': 1,
+'name': 1
+};
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { projection });
+const result = await cursor.toArray();
+await client.close();
+
 ### 4. All the companies that had a Valuation Amount of more than 100.000.000 and have been founded before 2010. Retrieve only the `name` and `ipo` fields.
 
 <!-- Your Code Goes Here -->
+
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {
+'$and': [
+    {
+      'ipo': {
+        '$gte': 100000000
+}
+}, {
+'founded_year': {
+'$lte': 2010
+}
+}
+]
+};
+const projection = {
+'ipo': 1,
+'name': 1
+};
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { projection });
+const result = await cursor.toArray();
+await client.close();
 
 ### 5. All the companies that have less than 1000 employees and have been founded before 2005. Order them by the number of employees and limit the search to 10 companies.
 
