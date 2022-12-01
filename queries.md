@@ -114,25 +114,174 @@ await client.close();
 
 <!-- Your Code Goes Here -->
 
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {
+'$and': [
+    {
+      'founded_year': {
+        '$lte': 2005
+}
+}, {
+'number_of_employees': {
+'$lte': 1000
+}
+}
+]
+};
+const sort = {
+'number_of_employees': 1
+};
+const limit = 10;
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { sort, limit });
+const result = await cursor.toArray();
+await client.close();
+
 ### 6. All the companies that don't include the `partners` field.
 
 <!-- Your Code Goes Here -->
+
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {};
+const projection = {
+'partners': 0
+};
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { projection });
+const result = await cursor.toArray();
+await client.close();
 
 ### 7. All the companies that have a null type of value on the `category_code` field.
 
 <!-- Your Code Goes Here -->
 
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {
+'category_code': null
+};
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter);
+const result = await cursor.toArray();
+await client.close();
+
 ### 8. All the companies that have at least 100 employees but less than 1000. Retrieve only the `name` and `number of employees` fields.
 
 <!-- Your Code Goes Here -->
+
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {
+'$and': [
+    {
+      '$gte': {
+'number_of_employees': 100
+}
+}, {
+'$lte': {
+'number_of_employees': 1000
+}
+}
+]
+};
+const projection = {
+'number_of_employees': 1,
+'name': 1
+};
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { projection });
+const result = await cursor.toArray();
+await client.close();
 
 ### 9. Order all the companies by their IPO price in a descending order.
 
 <!-- Your Code Goes Here -->
 
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {};
+const projection = {
+'ipo': 1
+};
+const sort = {
+'ipo': 1
+};
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { projection, sort });
+const result = await cursor.toArray();
+await client.close();
+
 ### 10. Retrieve the 10 companies with most employees, order by the `number of employees`
 
 <!-- Your Code Goes Here -->
+
+/\*
+
+- Requires the MongoDB Node.js Driver
+- https://mongodb.github.io/node-mongodb-native
+  \*/
+
+const filter = {};
+const sort = {
+'number_of_employees': -1
+};
+const limit = 10;
+
+const client = await MongoClient.connect(
+'mongodb://localhost:27017/',
+{ useNewUrlParser: true, useUnifiedTopology: true }
+);
+const coll = client.db('lab-advance-querying-mongo').collection('enap92');
+const cursor = coll.find(filter, { sort, limit });
+const result = await cursor.toArray();
+await client.close();
 
 ### 11. All the companies founded on the second semester of the year. Limit your search to 1000 companies.
 
